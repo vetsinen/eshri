@@ -14,7 +14,7 @@ $BASIC_URL = 'https://eshri.cc.ua/';
 
 if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
     file_put_contents($_POST['noteid'] . '.md', $_POST['notetext']);
-    echo 'note saved with address ' . $BASIC_URL . $_POST['noteid'];
+    header("Location: ".$_POST['noteid'] );
 }
 
 function generateRandomString($length = 10)
