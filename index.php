@@ -5,22 +5,44 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>enhanced shrib</title>
 </head>
 <body>
-<?php if (($_SERVER['REQUEST_METHOD'] === 'POST')):?>
-<p>your note will be saved</p>
-<?php endif; ?>
 
-<?php if (($_SERVER['REQUEST_METHOD'] === 'GET')): ?>
-you wanted in GET <?php echo $_SERVER['QUERY_STRING']; ?><br>
-    <form name="notefrm" method="post" action="index.php">
-        <textarea name="notetext" rows="5" style="width:100%;">some text</textarea><br>
-        <!--    info from https://ru.stackoverflow.com/questions/123798/%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BD%D0%B0-index-php-->
-        <input name="noteid" value="<?php echo $_SERVER['QUERY_STRING'];?>"><br>
-        <input type="submit">
-    </form>
-<?php endif; ?>
+<?php
+$BASIC_URL = 'https://eshri.cc.ua/';
+
+if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
+    file_put_contents($_POST['noteid'] . '.md', $_POST['notetext']);
+    echo 'note saved with address ' . $BASIC_URL . $_POST['noteid'];
+}
+
+function generateRandomString($length = 10)
+{
+    return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length / strlen($x)))), 1, $length);
+}
+
+if (($_SERVER['REQUEST_METHOD'] === 'GET')) {
+    if (isset($_SERVER['QUERY_STRING']) && !$_SERVER['QUERY_STRING']) {
+        header("Location: " . $BASIC_URL . generateRandomString());
+        die();
+    };
+}
+
+if (!isset($_SERVER['QUERY_STRING']) || !$_SERVER['QUERY_STRING']) {
+    $_SERVER = [];
+    $_SERVER['QUERY_STRING'] = generateRandomString();
+}
+$note = @file_get_contents($_SERVER['QUERY_STRING'].'.md')
+
+?>
+
+<form name="notefrm" method="POST" action="">
+    <textarea name="notetext" rows="5" style="width:100%;"><?=$note?></textarea><br>
+    url for note http://eshri.cc.ua/<input name="noteid" value="<?php echo $_SERVER['QUERY_STRING']; ?>"><br>
+    <input type="submit" value="save">
+</form>
+
 
 </body>
 </html>
