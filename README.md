@@ -1,1 +1,1 @@
-create file password in a root directory
+better than shrib.com
