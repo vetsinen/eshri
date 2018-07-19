@@ -10,11 +10,14 @@
 <body>
 <?php
 //info from https://ru.stackoverflow.com/questions/123798/%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BD%D0%B0-index-php
-//echo 'you wanted '.$_SERVER['QUERY_STRING'];
+//echo 'you wanted '. $_SERVER['QUERY_STRING'].'<br>';
+if (($_SERVER['REQUEST_METHOD'] === 'GET')) echo 'GET';
+if (($_SERVER['REQUEST_METHOD'] === 'POST')) echo 'POST';
+
 ?>
-<form name="notefrm" method="get" action="index.php">
-    <textarea bame="notetext">some text</textarea><br>
-    <input name="noteurl" value="" type="hidden">
+<form name="notefrm" method="post" action="index.php">
+    <textarea name="notetext" rows="5" style="width:100%;">some text</textarea><br>
+    <input name="noteid" value="<?php echo $_SERVER['QUERY_STRING'];?>"><br>
     <input type="submit">
 </form>
 </body>
